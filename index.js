@@ -15,7 +15,7 @@ function applyMiddleware(...middlewares) {
     return function (reducer) {
       const store = createStore(reducer);
 
-      const chain = middlewares.map((middleware) => middleware());
+      const chain = middlewares.map((middleware) => middleware(store));
 
       const dispatch = compose(...chain)(store.dispatch);
 
@@ -104,7 +104,21 @@ function removeGoalAction(id) {
 }
 
 // Middlewares
-function checker() {
+function logger(store) {
+  return function (next) {
+    return function (action) {
+      console.group(action.type);
+      console.log("Action: ", action);
+
+      next(action);
+
+      console.log("New state: ", store.getState());
+      console.groupEnd();
+    };
+  };
+}
+
+function checker(store) {
   return function (next) {
     return function (action) {
       if (
@@ -161,7 +175,7 @@ function rootReducer(state = {}, action) {
 }
 
 // Store
-const store = createStore(rootReducer, applyMiddleware(checker));
+const store = createStore(rootReducer, applyMiddleware(logger, checker));
 
 // Utils
 function generateId() {
