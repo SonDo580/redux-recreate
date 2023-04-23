@@ -1,41 +1,4 @@
-function todoReducer(state = [], action) {
-  switch (action.type) {
-    case "ADD_TODO":
-      return [...state, action.todo];
-
-    case "REMOVE_TODO":
-      return state.filter((todo) => todo.id !== action.id);
-
-    case "TOGGLE_TODO":
-      return state.map((todo) =>
-        todo.id !== action.id ? todo : { ...todo, complete: !todo.complete }
-      );
-
-    default:
-      return state;
-  }
-}
-
-function goalReducer(state = [], action) {
-  switch (action.type) {
-    case "ADD_GOAL":
-      return [...state, action.goal];
-
-    case "REMOVE_GOAL":
-      return state.filter((goal) => goal.id !== action.id);
-
-    default:
-      return state;
-  }
-}
-
-function rootReducer(state = {}, action) {
-  return {
-    todos: todoReducer(state.todos, action),
-    goals: goalReducer(state.goals, action),
-  };
-}
-
+// Library code
 function createStore(reducer) {
   let state;
   let listeners = [];
@@ -64,6 +27,52 @@ function createStore(reducer) {
   };
 }
 
+// App code
+const ADD_TODO = "ADD_TODO";
+const REMOVE_TODO = "REMOVE_TODO";
+const TOGGLE_TODO = "TOGGLE_TODO";
+
+const ADD_GOAL = "ADD_GOAL";
+const REMOVE_GOAL = "REMOVE_GOAL";
+
+function todoReducer(state = [], action) {
+  switch (action.type) {
+    case ADD_TODO:
+      return [...state, action.todo];
+
+    case REMOVE_TODO:
+      return state.filter((todo) => todo.id !== action.id);
+
+    case TOGGLE_TODO:
+      return state.map((todo) =>
+        todo.id !== action.id ? todo : { ...todo, complete: !todo.complete }
+      );
+
+    default:
+      return state;
+  }
+}
+
+function goalReducer(state = [], action) {
+  switch (action.type) {
+    case ADD_GOAL:
+      return [...state, action.goal];
+
+    case REMOVE_GOAL:
+      return state.filter((goal) => goal.id !== action.id);
+
+    default:
+      return state;
+  }
+}
+
+function rootReducer(state = {}, action) {
+  return {
+    todos: todoReducer(state.todos, action),
+    goals: goalReducer(state.goals, action),
+  };
+}
+
 // Using the store
 const store = createStore(rootReducer);
 
@@ -72,7 +81,7 @@ const unsubscribe = store.subscribe(() =>
 );
 
 store.dispatch({
-  type: "ADD_TODO",
+  type: ADD_TODO,
   todo: {
     id: 0,
     name: "Learn Node",
@@ -81,7 +90,7 @@ store.dispatch({
 });
 
 store.dispatch({
-  type: "ADD_TODO",
+  type: ADD_TODO,
   todo: {
     id: 1,
     name: "Learn Go",
@@ -91,7 +100,7 @@ store.dispatch({
 
 unsubscribe();
 store.dispatch({
-  type: "ADD_TODO",
+  type: ADD_TODO,
   todo: {
     id: 2,
     name: "Learn GraphQL",
