@@ -109,19 +109,43 @@ function rootReducer(state = {}, action) {
   };
 }
 
-// Using the store
+// Store
 const store = createStore(rootReducer);
 
-const unsubscribe = store.subscribe(() =>
-  console.log("New state: ", store.getState())
-);
+// Utils
+function generateId() {
+  return (
+    Math.random().toString(36).substring(2) + new Date().getTime().toString(36)
+  );
+}
 
-store.dispatch(
-  addTodoAction({
-    id: 0,
-    name: "Learn Node",
-    complete: false,
-  })
-);
+// DOM code
+document.querySelector("#addTodoBtn").addEventListener("click", addTodo);
+document.querySelector("#addGoalBtn").addEventListener("click", addGoal);
 
-unsubscribe();
+function addTodo() {
+  const input = document.querySelector("#todo");
+  const name = input.value;
+  input.value = "";
+
+  store.dispatch(
+    addTodoAction({
+      id: generateId(),
+      name,
+      complete: false,
+    })
+  );
+}
+
+function addGoal() {
+  const input = document.querySelector("#goal");
+  const name = input.value;
+  input.value = "";
+
+  store.dispatch(
+    addGoalAction({
+      id: generateId(),
+      name,
+    })
+  );
+}
