@@ -1,7 +1,7 @@
-function reducer(state = { todos: [] }, action) {
+function todoReducer(state = [], action) {
   switch (action.type) {
     case "ADD_TODO":
-      return { ...state, todos: [...state.todos, action.todo] };
+      return [...state, action.todo];
 
     case "REMOVE_TODO":
       return state.filter((todo) => todo.id !== action.id);
