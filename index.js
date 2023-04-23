@@ -137,6 +137,10 @@ function addTodo() {
   );
 }
 
+function toggleTodo(id) {
+  store.dispatch(toggleTodoAction(id));
+}
+
 function addGoal() {
   const input = document.querySelector("#goal");
   const name = input.value;
@@ -163,6 +167,15 @@ const unsubscribe = store.subscribe(() => {
 function addTodoToDOM(todo) {
   const node = document.createElement("li");
   node.textContent = todo.name;
+
+  node.style.textDecoration = todo.complete ? "line-through" : "none";
+  node.style.cursor = "pointer";
+  node.style.color = todo.complete ? "gray" : "black";
+
+  node.addEventListener("click", () => {
+    toggleTodo(todo.id);
+  });
+
   document.querySelector("#todos").appendChild(node);
 }
 
