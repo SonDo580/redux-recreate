@@ -123,6 +123,13 @@ function generateId() {
 document.querySelector("#addTodoBtn").addEventListener("click", addTodo);
 document.querySelector("#addGoalBtn").addEventListener("click", addGoal);
 
+function createRemoveButton(onClick) {
+  const btn = document.createElement("button");
+  btn.textContent = "X";
+  btn.addEventListener("click", onClick);
+  return btn;
+}
+
 function addTodo() {
   const input = document.querySelector("#todo");
   const name = input.value;
@@ -141,6 +148,10 @@ function toggleTodo(id) {
   store.dispatch(toggleTodoAction(id));
 }
 
+function removeTodo(id) {
+  store.dispatch(removeTodoAction(id));
+}
+
 function addGoal() {
   const input = document.querySelector("#goal");
   const name = input.value;
@@ -152,6 +163,10 @@ function addGoal() {
       name,
     })
   );
+}
+
+function removeGoal(id) {
+  store.dispatch(removeGoalAction(id));
 }
 
 const unsubscribe = store.subscribe(() => {
@@ -176,11 +191,22 @@ function addTodoToDOM(todo) {
     toggleTodo(todo.id);
   });
 
+  const removeBtn = createRemoveButton(() => {
+    removeTodo(todo.id);
+  });
+  node.appendChild(removeBtn);
+
   document.querySelector("#todos").appendChild(node);
 }
 
 function addGoalToDOM(goal) {
   const node = document.createElement("li");
   node.textContent = goal.name;
+
+  const removeBtn = createRemoveButton(() => {
+    removeGoal(goal.id);
+  });
+  node.appendChild(removeBtn);
+
   document.querySelector("#goals").appendChild(node);
 }
