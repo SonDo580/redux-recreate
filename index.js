@@ -36,12 +36,37 @@ function createStore() {
   };
 }
 
+// Using the store
 const store = createStore();
+
+const unsubscribe = store.subscribe(() =>
+  console.log("New state: ", store.getState())
+);
+
 store.dispatch({
   type: "ADD_TODO",
   todo: {
     id: 0,
     name: "Learn Node",
+    complete: false,
+  },
+});
+
+store.dispatch({
+  type: "ADD_TODO",
+  todo: {
+    id: 1,
+    name: "Learn Go",
+    complete: false,
+  },
+});
+
+unsubscribe();
+store.dispatch({
+  type: "ADD_TODO",
+  todo: {
+    id: 2,
+    name: "Learn GraphQL",
     complete: false,
   },
 });
