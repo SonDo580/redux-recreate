@@ -1,3 +1,13 @@
+function reducer(state = { todos: [] }, action) {
+  switch (action.type) {
+    case "ADD_TODO":
+      return { ...state, todos: [...state.todos, action.todo] };
+
+    default:
+      return state;
+  }
+}
+
 function createStore() {
   let state;
   let listeners = [];
