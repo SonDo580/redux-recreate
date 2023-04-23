@@ -149,3 +149,25 @@ function addGoal() {
     })
   );
 }
+
+const unsubscribe = store.subscribe(() => {
+  const { todos, goals } = store.getState();
+
+  document.querySelector("#todos").textContent = "";
+  document.querySelector("#goals").textContent = "";
+
+  todos.forEach(addTodoToDOM);
+  goals.forEach(addGoalToDOM);
+});
+
+function addTodoToDOM(todo) {
+  const node = document.createElement("li");
+  node.textContent = todo.name;
+  document.querySelector("#todos").appendChild(node);
+}
+
+function addGoalToDOM(goal) {
+  const node = document.createElement("li");
+  node.textContent = goal.name;
+  document.querySelector("#goals").appendChild(node);
+}
