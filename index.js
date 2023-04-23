@@ -29,6 +29,13 @@ function goalReducer(state = [], action) {
   }
 }
 
+function rootReducer(state = {}, action) {
+  return {
+    todos: todoReducer(state.todos, action),
+    goals: goalReducer(state.goals, action),
+  };
+}
+
 function createStore(reducer) {
   let state;
   let listeners = [];
@@ -58,7 +65,7 @@ function createStore(reducer) {
 }
 
 // Using the store
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 const unsubscribe = store.subscribe(() =>
   console.log("New state: ", store.getState())
