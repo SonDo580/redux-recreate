@@ -1,4 +1,4 @@
-# Redux recreate (basic)
+# Redux recreate
 
 - Recreate basic functionality of Redux
 - (Guided project from UI.dev)
