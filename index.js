@@ -8,7 +8,7 @@ function reducer(state = { todos: [] }, action) {
   }
 }
 
-function createStore() {
+function createStore(reducer) {
   let state;
   let listeners = [];
 
@@ -37,7 +37,7 @@ function createStore() {
 }
 
 // Using the store
-const store = createStore();
+const store = createStore(reducer);
 
 const unsubscribe = store.subscribe(() =>
   console.log("New state: ", store.getState())
