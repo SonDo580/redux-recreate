@@ -3,6 +3,14 @@ function reducer(state = { todos: [] }, action) {
     case "ADD_TODO":
       return { ...state, todos: [...state.todos, action.todo] };
 
+    case "REMOVE_TODO":
+      return state.filter((todo) => todo.id !== action.id);
+
+    case "TOGGLE_TODO":
+      return state.map((todo) =>
+        todo.id !== action.id ? todo : { ...todo, complete: !todo.complete }
+      );
+
     default:
       return state;
   }
