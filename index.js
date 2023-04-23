@@ -1,4 +1,37 @@
-function createStore(reducer) {
+function compose(...funcs) {
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  return funcs.reduce(
+    (f1, f2) =>
+      (...args) =>
+        f1(f2(...args))
+  );
+}
+
+function applyMiddleware(...middlewares) {
+  return function (createStore) {
+    return function (reducer) {
+      const store = createStore(reducer);
+
+      const chain = middlewares.map((middleware) => middleware());
+
+      const dispatch = compose(...chain)(store.dispatch);
+
+      return {
+        ...store,
+        dispatch,
+      };
+    };
+  };
+}
+
+function createStore(reducer, enhancer) {
+  if (typeof enhancer === "function") {
+    return enhancer(createStore)(reducer);
+  }
+
   let state;
   let listeners = [];
 
@@ -70,6 +103,24 @@ function removeGoalAction(id) {
   };
 }
 
+// Middlewares
+function checker() {
+  return function (next) {
+    return function (action) {
+      if (
+        (action.type === ADD_TODO &&
+          action.todo.name.toLowerCase().includes("bitcoin")) ||
+        (action.type === ADD_GOAL &&
+          action.goal.name.toLowerCase().includes("bitcoin"))
+      ) {
+        return alert("Nope. That's a bad idea");
+      }
+
+      next(action);
+    };
+  };
+}
+
 // Reducers
 function todoReducer(state = [], action) {
   switch (action.type) {
@@ -110,7 +161,7 @@ function rootReducer(state = {}, action) {
 }
 
 // Store
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(checker));
 
 // Utils
 function generateId() {
