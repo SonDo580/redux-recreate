@@ -1,4 +1,3 @@
-// Library code
 function createStore(reducer) {
   let state;
   let listeners = [];
@@ -27,7 +26,7 @@ function createStore(reducer) {
   };
 }
 
-// App code
+// Constants
 const ADD_TODO = "ADD_TODO";
 const REMOVE_TODO = "REMOVE_TODO";
 const TOGGLE_TODO = "TOGGLE_TODO";
@@ -35,6 +34,43 @@ const TOGGLE_TODO = "TOGGLE_TODO";
 const ADD_GOAL = "ADD_GOAL";
 const REMOVE_GOAL = "REMOVE_GOAL";
 
+// Action creators
+function addTodoAction(todo) {
+  return {
+    type: ADD_TODO,
+    todo,
+  };
+}
+
+function removeTodoAction(id) {
+  return {
+    type: REMOVE_TODO,
+    id,
+  };
+}
+
+function toggleTodoAction(id) {
+  return {
+    type: TOGGLE_TODO,
+    id,
+  };
+}
+
+function addGoalAction(goal) {
+  return {
+    type: ADD_GOAL,
+    goal,
+  };
+}
+
+function removeGoalAction(id) {
+  return {
+    type: REMOVE_GOAL,
+    id,
+  };
+}
+
+// Reducers
 function todoReducer(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
@@ -80,30 +116,12 @@ const unsubscribe = store.subscribe(() =>
   console.log("New state: ", store.getState())
 );
 
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
+store.dispatch(
+  addTodoAction({
     id: 0,
     name: "Learn Node",
     complete: false,
-  },
-});
-
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
-    id: 1,
-    name: "Learn Go",
-    complete: false,
-  },
-});
+  })
+);
 
 unsubscribe();
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
-    id: 2,
-    name: "Learn GraphQL",
-    complete: false,
-  },
-});
