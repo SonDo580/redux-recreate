@@ -23,8 +23,25 @@ function createStore() {
     };
   };
 
+  const dispatch = (action) => {
+    state = reducer(state, action);
+
+    listeners.forEach((listener) => listener());
+  };
+
   return {
     getState,
     subscribe,
+    dispatch,
   };
 }
+
+const store = createStore();
+store.dispatch({
+  type: "ADD_TODO",
+  todo: {
+    id: 0,
+    name: "Learn Node",
+    complete: false,
+  },
+});
